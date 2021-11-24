@@ -31,11 +31,20 @@ export class BindService {
         for(let record of arr) {
             //if(request.)
             if(QTYPE_TO_NAME[request.question[0].type] === record.type) {
-                response.answer.push(NativeDns.A({
-                    name: request.question[0].name,
-                    address: record.value,
-                    ttl: 600,
-                }));
+                if(record.type === "A") {
+                    response.answer.push(NativeDns.A({
+                        name: request.question[0].name,
+                        address: record.value,
+                        ttl: 600,
+                    }));
+                }
+                if(record.type === "AAAA") {
+                    response.answer.push(NativeDns.AAAA({
+                        name: request.question[0].name,
+                        address: record.value,
+                        ttl: 600,
+                    }));
+                }
             }
         }
 
