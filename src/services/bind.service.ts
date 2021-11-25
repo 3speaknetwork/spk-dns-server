@@ -16,12 +16,14 @@ export class BindService {
 
     async handleRequest(request, response) {
         const name = request.question[0].name;
-        const [subdomain, rootName, tld, exTld] = name.split('.');
+        const [subdomain, rootName, tld, exTld] = name.toLowerCase().split('.');
 
         if(tld !== 'spk' || exTld !== 'domains') {
             response.send()
             return;
         }
+        response.header.aa = 1
+        
 
         const arr = await this.self.records.find({
             name: subdomain,
@@ -55,6 +57,6 @@ export class BindService {
         this.server = NativeDns.createServer()
         
         this.server.on('request', this.handleRequest);
-        this.server.serve(15353)
+        this.server.serve(53)
     }
 }
